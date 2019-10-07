@@ -10,24 +10,24 @@ package edu.javeriana.patrones.broker.model;
  * @author cristianmendi
  */
 public class Product {
-    private String id;
+	
+    private long id;
     private String name;
     private long price;
     private long quantity;
     
     public Product(){
-        
     }
 
-    public String getId() {
-        return id;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public String getName() {
+	public String getName() {
         return name;
     }
 

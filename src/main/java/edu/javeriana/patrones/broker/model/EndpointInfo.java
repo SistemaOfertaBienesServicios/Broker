@@ -7,61 +7,70 @@ package edu.javeriana.patrones.broker.model;
 
 import java.util.List;
 
+/**
+ *
+ * @author cristianmendi
+ */
 public class EndpointInfo {
-    
-    public EndpointInfo(){
-        
-    }
-    
-    private long id;
-    private String endpoint;
-    private List<String> endpointParameters;
 
-    public long getId() {
-        return id;
-    }
+	private long id;
+	private String endpoint;
+	private String endpointParameters;
 
-    public void setId(long id) {
-        this.id = id;
-    }
-    
-    public EndpointInfo(String endpoint,List<String> endpointParameters){
-        this.endpoint=endpoint;
-        this.endpointParameters=endpointParameters;
-    }
-    
+        public EndpointInfo(long id, String endpoint, String endpointParameters) {
+            this.id = id;
+            this.endpoint = endpoint;
+            this.endpointParameters = endpointParameters;
+        }
+	
 
-    /**
-     * @return the endpoint
-     */
-    public String getEndpoint() {
-        return endpoint;
-    }
+	public EndpointInfo() {
+	}
 
-    /**
-     * @param endpoint the endpoint to set
-     */
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-    }
+	public long getId() {
+		return id;
+	}
 
-    /**
-     * @return the endpointParameters
-     */
-    public List<String> getEndpointParameters() {
-        return endpointParameters;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    /**
-     * @param endpointParameters the endpointParameters to set
-     */
-    public void setEndpointParameters(List<String> endpointParameters) {
-        this.endpointParameters = endpointParameters;
-    }
+	public EndpointInfo(String endpoint, String endpointParameters) {
+		this.endpoint = endpoint;
+		this.endpointParameters = endpointParameters;
+	}
 
-    @Override
-    public String toString() {
-        return "EndpointInfo{" + "endpoint=" + endpoint + ", endpointParameters=" + endpointParameters + '}';
-    }
+	/**
+	 * @return the endpoint
+	 */
+	public String getEndpoint() {
+		return endpoint;
+	}
+
+	/**
+	 * @param endpoint the endpoint to set
+	 */
+	public void setEndpoint(String endpoint) {
+		this.endpoint = endpoint;
+	}
+
+	/**
+	 * @return the endpointParameters
+	 */
+	public String getEndpointParameters() {
+		return endpointParameters;
+	}
+
+	/**
+	 * @param endpointParameters the endpointParameters to set
+	 */
+	public void setEndpointParameters(String endpointParameters) {
+		this.endpointParameters = endpointParameters;
+	}
+
+	@Override
+	public String toString() {
+		return "EndpointInfo{" + "endpoint=" + endpoint + ", endpointParameters=" + endpointParameters + '}';
+	}
 
 }

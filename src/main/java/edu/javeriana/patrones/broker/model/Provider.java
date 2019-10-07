@@ -6,29 +6,36 @@
 package edu.javeriana.patrones.broker.model;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author cristianmendi
  */
 public class Provider {
+
     private long id;
     private String name;
     private boolean system;
     private EndpointInfo endpoint;
     private List<Product> products;
     private List<Quotation> quotations;
-    
-    public Provider(long id,String name,boolean system,EndpointInfo endpoint){
-        this.id=id;
-        this.name=name;
-        this.system=system;
-        this.endpoint=endpoint;
+
+    public Provider() {
+    }
+
+    public Provider(long id, String name, boolean system, EndpointInfo endpoint) {
+        this.id = id;
+        this.name = name;
+        this.system = system;
+        this.endpoint = endpoint;
     }
     
-    public Provider(){
+    public Provider(long id, String name, boolean system) {
+        this.id = id;
+        this.name = name;
+        this.system = system;
     }
+
 
     public List<Product> getProducts() {
         return products;
@@ -95,16 +102,16 @@ public class Provider {
     public void setEndpoint(EndpointInfo endpoint) {
         this.endpoint = endpoint;
     }
-    
-    public boolean inCatalog(String productName){
+
+    public boolean inCatalog(String productName) {
         System.out.println("inCatalog");
         return this.products.stream().anyMatch((product) -> (product.getName().equals(productName)));
     }
-    
-        @Override
+
+    @Override
     public String toString() {
-        return "Provider{" + "id=" + id + ", name=" + name + ", system=" + system + ", endpoint=" + endpoint + ", products=" + products + '}';
+        return "Provider{" + "id=" + id + ", name=" + name + ", system=" + system + ", endpoint=" + endpoint
+                + ", products=" + products + '}';
     }
-    
-    
+
 }

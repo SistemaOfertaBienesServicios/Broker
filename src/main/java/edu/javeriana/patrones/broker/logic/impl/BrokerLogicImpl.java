@@ -101,10 +101,7 @@ public class BrokerLogicImpl implements BrokerLogic {
         pr.setProducts(prods);
         EndpointInfo epi = new EndpointInfo();
         epi.setEndpoint("endpointa");
-        List<String> parameters=new ArrayList<>();
-        parameters.add("producto");
-        parameters.add("cantidad");
-        epi.setEndpointParameters(parameters);
+        epi.setEndpointParameters("Producto Cantidad");
         pr.setEndpoint(epi);
         pr1.setEndpoint(epi);
         List<Provider> provs = new ArrayList<>();
