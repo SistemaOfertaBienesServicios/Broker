@@ -7,10 +7,6 @@ package edu.javeriana.patrones.broker.model;
 
 import java.util.List;
 
-/**
- *
- * @author cristianmendi
- */
 public class EndpointInfo {
     
     public EndpointInfo(){
@@ -19,7 +15,7 @@ public class EndpointInfo {
     
     private long id;
     private String endpoint;
-    private String endpointParameters;
+    private List<String> endpointParameters;
 
     public long getId() {
         return id;
@@ -29,7 +25,7 @@ public class EndpointInfo {
         this.id = id;
     }
     
-    public EndpointInfo(String endpoint,String endpointParameters){
+    public EndpointInfo(String endpoint,List<String> endpointParameters){
         this.endpoint=endpoint;
         this.endpointParameters=endpointParameters;
     }
@@ -52,14 +48,14 @@ public class EndpointInfo {
     /**
      * @return the endpointParameters
      */
-    public String getEndpointParameters() {
+    public List<String> getEndpointParameters() {
         return endpointParameters;
     }
 
     /**
      * @param endpointParameters the endpointParameters to set
      */
-    public void setEndpointParameters(String endpointParameters) {
+    public void setEndpointParameters(List<String> endpointParameters) {
         this.endpointParameters = endpointParameters;
     }
 

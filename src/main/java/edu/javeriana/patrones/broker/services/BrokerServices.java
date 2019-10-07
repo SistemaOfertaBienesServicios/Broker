@@ -26,14 +26,6 @@ public class BrokerServices {
     public void sendQuotations(List<Provider> providers) throws BrokerException{
         brokerlogic.sendQuotations(providers);
     }
-    
-    public boolean validateToken(String token) throws BrokerException{
-        return brokerlogic.validateToken(token);
-    }
-    
-    public Provider registerProvider(Provider newProvider) throws BrokerException{
-        return brokerlogic.registerProvider(newProvider);
-    }
 
     public void makeQuotes(List<Product> products) {
         brokerlogic.makeQuotes(products);

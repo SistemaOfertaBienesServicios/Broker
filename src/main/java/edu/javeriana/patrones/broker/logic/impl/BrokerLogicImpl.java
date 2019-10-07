@@ -5,11 +5,11 @@
  */
 package edu.javeriana.patrones.broker.logic.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.javeriana.patrones.broker.logic.BrokerException;
 import edu.javeriana.patrones.broker.logic.BrokerLogic;
 import edu.javeriana.patrones.broker.logic.SendQuotationThread;
+import edu.javeriana.patrones.broker.model.EndpointInfo;
 import edu.javeriana.patrones.broker.model.Product;
 import edu.javeriana.patrones.broker.model.Provider;
 import java.io.BufferedReader;
@@ -37,6 +37,7 @@ public class BrokerLogicImpl implements BrokerLogic {
 
     @Override
     public void makeQuotes(List<Product> products) {
+        System.out.println("makeQuotes");
         List<Provider> providers = getProvidersToQuote(products);
         providers.forEach((provider) -> {
             String body = generateRequestData(provider,products);
@@ -46,23 +47,21 @@ public class BrokerLogicImpl implements BrokerLogic {
     }
     
     private List<Provider> getProvidersToQuote(List<Product> products){
+        System.out.println("getProvidersToQuote");
         List<Provider> providers = getProvsData();
         List<Provider> acceptedProviders = new ArrayList();
-        for (Provider provider: providers ){
+        providers.forEach((provider) -> {
             int availableProducts = 0;
-            for (Product product : products){
-                if(provider.inCatalog(product.getName())){
-                    availableProducts+=1;
-                }
-            }
-            if(availableProducts==products.size()){
+            availableProducts = products.stream().filter((product) -> (provider.inCatalog(product.getName()))).map((_item) -> 1).reduce(availableProducts, Integer::sum);
+            if (availableProducts==products.size()) {
                 acceptedProviders.add(provider);
             }
-        }
+        });
         return acceptedProviders;
     }
     
     private void sendRequest(String body, String endpoint){
+        System.out.println("sendRequest");
         SendQuotationThread thread = new SendQuotationThread();
         thread.setBody(body);
         thread.setEndpoint(endpoint);
@@ -78,6 +77,8 @@ public class BrokerLogicImpl implements BrokerLogic {
     }
 
     private List<Provider> getProvsData() {
+        System.out.println("getProvsData");
+        /*
         String response = generateGetRequest("endpoint getProvidersData");
         List<Provider> provsData;
         try {
@@ -86,29 +87,31 @@ public class BrokerLogicImpl implements BrokerLogic {
             Logger.getLogger(BrokerLogicImpl.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-        return provsData;
+        return provsData;*/
+        Provider pr1= new Provider();
+        pr1.setName("proveedor 1");
+        Provider pr= new Provider();
+        pr.setName("proveedor 2");
+        Product p = new Product();
+        p.setName("Agua");
+        p.setPrice(20000);
+        List<Product> prods = new ArrayList<>();
+        prods.add(p);
+        pr1.setProducts(prods);
+        pr.setProducts(prods);
+        EndpointInfo epi = new EndpointInfo();
+        epi.setEndpoint("endpointa");
+        List<String> parameters=new ArrayList<>();
+        parameters.add("producto");
+        parameters.add("cantidad");
+        epi.setEndpointParameters(parameters);
+        pr.setEndpoint(epi);
+        pr1.setEndpoint(epi);
+        List<Provider> provs = new ArrayList<>();
+        provs.add(pr);
+        provs.add(pr1);
+        return provs;
     }
-
-    @Override
-    public boolean validateToken(String token) throws BrokerException {
-        System.out.println("token: " + token);
-        return token.equals("valido");
-    }
-
-    @Override
-    public Provider registerProvider(Provider newProvider) throws BrokerException {
-        String response = generatePOSTRequest("endopointRegistro","body");
-        Provider provider;
-        try {
-            provider = omp.readValue(response, new TypeReference<Provider>() {});
-        } catch (IOException ex) {
-            Logger.getLogger(BrokerLogicImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-        return provider;
-    }
-    
-    
 
     private String generateGetRequest(String endpoint) {
         try {

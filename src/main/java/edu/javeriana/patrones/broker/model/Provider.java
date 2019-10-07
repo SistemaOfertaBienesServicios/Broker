@@ -97,6 +97,7 @@ public class Provider {
     }
     
     public boolean inCatalog(String productName){
+        System.out.println("inCatalog");
         return this.products.stream().anyMatch((product) -> (product.getName().equals(productName)));
     }
     

@@ -17,7 +17,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface BrokerLogic {
     public void sendQuotations(List<Provider> providers) throws BrokerException;
-    public boolean validateToken(String token) throws BrokerException;
-    public Provider registerProvider(Provider newProvider) throws BrokerException;
     public void makeQuotes(List<Product> products);
 }
