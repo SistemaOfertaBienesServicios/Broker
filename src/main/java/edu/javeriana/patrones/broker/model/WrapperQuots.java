@@ -12,17 +12,30 @@ import java.util.List;
  * @author cristianmendi
  */
 public class WrapperQuots {
-    private List<Product> products;
-    private List<Provider> providers;
-    private String username;
+    List<Product> products;
+    List<Provider> providers;
+    String username;
+    String email;
+    
     
     public WrapperQuots() {
     }
 
-    public WrapperQuots(List<Product> products, List<Provider> providers, String username) {
+    public WrapperQuots(List<Product> products, List<Provider> providers, String username, String email) {
         this.products = products;
         this.providers = providers;
         this.username = username;
+        this.email = email;
+    }
+
+   
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     
     
@@ -53,8 +66,10 @@ public class WrapperQuots {
 
     @Override
     public String toString() {
-        return "WrapperQuots{" + "products=" + products + ", providers=" + providers + ", username=" + username + '}';
+        return "WrapperQuots{" + "products=" + products + ", providers=" + providers + ", username=" + username + ", email=" + email + '}';
     }
+
+    
 
     
 

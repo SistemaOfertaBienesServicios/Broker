@@ -9,6 +9,7 @@ import edu.javeriana.patrones.broker.logic.BrokerException;
 import edu.javeriana.patrones.broker.logic.BrokerLogic;
 import edu.javeriana.patrones.broker.model.Product;
 import edu.javeriana.patrones.broker.model.Provider;
+import edu.javeriana.patrones.broker.model.User;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class BrokerServices {
     @Autowired
     BrokerLogic brokerlogic=null;
 
-    public void makeQuotes(List<Product> products,List<Provider> providers,String username ) {
-        brokerlogic.makeQuotes(products,providers,username);
+    public void makeQuotes(List<Product> products,List<Provider> providers,User user) {
+        brokerlogic.makeQuotes(products,providers,user);
     }
 }

@@ -7,6 +7,7 @@ package edu.javeriana.patrones.broker.logic;
 
 import edu.javeriana.patrones.broker.model.Product;
 import edu.javeriana.patrones.broker.model.Provider;
+import edu.javeriana.patrones.broker.model.User;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +17,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface BrokerLogic {
-    public void makeQuotes(List<Product> products,List<Provider> providers,String username);
+    public void makeQuotes(List<Product> products,List<Provider> providers,User user);
 }

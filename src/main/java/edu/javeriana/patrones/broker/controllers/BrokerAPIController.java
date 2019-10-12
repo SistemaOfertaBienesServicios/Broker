@@ -8,6 +8,7 @@ package edu.javeriana.patrones.broker.controllers;
 import edu.javeriana.patrones.broker.logic.BrokerException;
 import edu.javeriana.patrones.broker.model.Product;
 import edu.javeriana.patrones.broker.model.Provider;
+import edu.javeriana.patrones.broker.model.User;
 import edu.javeriana.patrones.broker.model.WrapperQuots;
 import edu.javeriana.patrones.broker.services.BrokerServices;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,9 +38,13 @@ public class BrokerAPIController {
     @Autowired
     BrokerServices bs;
     
+    @CrossOrigin
     @RequestMapping(path = "/quote", method = RequestMethod.POST)
     public ResponseEntity<?> makeQuotes(@RequestBody WrapperQuots quotInfo) {
-        bs.makeQuotes(quotInfo.getProducts(),quotInfo.getProviders(),quotInfo.getUsername());
+        User u = new User();
+        u.setEmail(quotInfo.getEmail());
+        u.setUsername(quotInfo.getUsername());
+        bs.makeQuotes(quotInfo.getProducts(),quotInfo.getProviders(),u);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     

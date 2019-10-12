@@ -12,6 +12,8 @@ import edu.javeriana.patrones.broker.logic.BrokerLogic;
 import edu.javeriana.patrones.broker.logic.SendQuotationThread;
 import edu.javeriana.patrones.broker.model.Product;
 import edu.javeriana.patrones.broker.model.Provider;
+import edu.javeriana.patrones.broker.model.User;
+import edu.javeriana.patrones.broker.services.SobsProperties;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,17 +35,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class BrokerLogicImpl implements BrokerLogic {
     
-    private ObjectMapper omp = new ObjectMapper();
+    public static ObjectMapper omp = new ObjectMapper();
+    private SobsProperties connectionPropierties = new SobsProperties();
+
+    private String urlSobsSaveQuote = connectionPropierties.getPropValues("registerQuotationEndpoint");
 
     @Override
-    public void makeQuotes(List<Product> products,List<Provider> providers,String username) {
+    public void makeQuotes(List<Product> products,List<Provider> providers,User user) {
 
         List<Provider> acceptedProviders = getProvidersToQuote(products,providers);
         acceptedProviders.forEach((provider) -> {
             String body = generateRequestData(products,provider.getEndpoint().getEndpointParameters());
             String endpoint = provider.getEndpoint().getEndpoint();
             System.out.println(endpoint);
-            sendRequest(body,endpoint);
+            sendRequest(body,products,user,provider);
         });  
     }
     
@@ -60,11 +65,16 @@ public class BrokerLogicImpl implements BrokerLogic {
         return acceptedProviders;
     }
     
-    private void sendRequest(String body, String endpoint){
+    private void sendRequest(String body, List<Product> products, User user, Provider provider){
         System.out.println("sendRequest");
+        System.out.println(user);
         SendQuotationThread thread = new SendQuotationThread();
         thread.setBody(body);
-        thread.setEndpoint(endpoint);
+        thread.setEndpoint(provider.getEndpoint().getEndpoint());
+        thread.setProducts(products);
+        thread.setUser(user);
+        thread.setProvider(provider);
+        thread.setConnEndpoint(urlSobsSaveQuote);
         thread.start();
     }
 
