@@ -42,9 +42,7 @@ public class BrokerLogicImpl implements BrokerLogic {
 
     @Override
     public void makeQuotes(List<Product> products,List<Provider> providers,User user) {
-
-        List<Provider> acceptedProviders = getProvidersToQuote(products,providers);
-        acceptedProviders.forEach((provider) -> {
+        providers.forEach((provider) -> {
             String body = generateRequestData(products,provider.getEndpoint().getEndpointParameters());
             String endpoint = provider.getEndpoint().getEndpoint();
             System.out.println(endpoint);
@@ -52,18 +50,6 @@ public class BrokerLogicImpl implements BrokerLogic {
         });  
     }
     
-    private List<Provider> getProvidersToQuote(List<Product> products,List<Provider> providers){
-        System.out.println("getProvidersToQuote");
-        List<Provider> acceptedProviders = new ArrayList();
-        providers.forEach((provider) -> {
-            int availableProducts = 0;
-            availableProducts = products.stream().filter((product) -> (provider.inCatalog(product.getName()))).map((_item) -> 1).reduce(availableProducts, Integer::sum);
-            if (availableProducts==products.size()) {
-                acceptedProviders.add(provider);
-            }
-        });
-        return acceptedProviders;
-    }
     
     private void sendRequest(String body, List<Product> products, User user, Provider provider){
         System.out.println("sendRequest");
