@@ -8,6 +8,7 @@ package edu.javeriana.patrones.broker.controllers;
 import edu.javeriana.patrones.broker.logic.BrokerException;
 import edu.javeriana.patrones.broker.model.Product;
 import edu.javeriana.patrones.broker.model.Provider;
+import edu.javeriana.patrones.broker.model.WrapperQuots;
 import edu.javeriana.patrones.broker.services.BrokerServices;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +37,8 @@ public class BrokerAPIController {
     BrokerServices bs;
     
     @RequestMapping(path = "/quote", method = RequestMethod.POST)
-    public ResponseEntity<?> makeQuotes(@RequestBody List<Product> products) {
-        bs.makeQuotes(products);
+    public ResponseEntity<?> makeQuotes(@RequestBody WrapperQuots quotInfo) {
+        bs.makeQuotes(quotInfo.getProducts(),quotInfo.getProviders(),quotInfo.getUsername());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     

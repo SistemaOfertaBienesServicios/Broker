@@ -22,12 +22,8 @@ public class BrokerServices {
     
     @Autowired
     BrokerLogic brokerlogic=null;
-    
-    public void sendQuotations(List<Provider> providers) throws BrokerException{
-        brokerlogic.sendQuotations(providers);
-    }
 
-    public void makeQuotes(List<Product> products) {
-        brokerlogic.makeQuotes(products);
+    public void makeQuotes(List<Product> products,List<Provider> providers,String username ) {
+        brokerlogic.makeQuotes(products,providers,username);
     }
 }

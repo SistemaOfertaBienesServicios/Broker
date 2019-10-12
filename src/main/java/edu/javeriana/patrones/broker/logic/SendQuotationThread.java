@@ -45,9 +45,8 @@ public class SendQuotationThread extends Thread {
     @Override
     public void run(){
         System.out.println("Sending post");
-        System.out.println(this.endpoint);
-        System.out.println(this.body);
-        //generatePOSTRequest(this.endpoint,this.body);
+        String response = generatePOSTRequest(this.endpoint,this.body);
+        
     }
     
     

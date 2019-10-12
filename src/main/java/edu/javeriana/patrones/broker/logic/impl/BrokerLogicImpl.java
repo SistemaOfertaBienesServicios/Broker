@@ -5,11 +5,11 @@
  */
 package edu.javeriana.patrones.broker.logic.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.javeriana.patrones.broker.logic.BrokerException;
 import edu.javeriana.patrones.broker.logic.BrokerLogic;
 import edu.javeriana.patrones.broker.logic.SendQuotationThread;
-import edu.javeriana.patrones.broker.model.EndpointInfo;
 import edu.javeriana.patrones.broker.model.Product;
 import edu.javeriana.patrones.broker.model.Provider;
 import java.io.BufferedReader;
@@ -36,19 +36,19 @@ public class BrokerLogicImpl implements BrokerLogic {
     private ObjectMapper omp = new ObjectMapper();
 
     @Override
-    public void makeQuotes(List<Product> products) {
-        System.out.println("makeQuotes");
-        List<Provider> providers = getProvidersToQuote(products);
-        providers.forEach((provider) -> {
-            String body = generateRequestData(provider,products);
+    public void makeQuotes(List<Product> products,List<Provider> providers,String username) {
+
+        List<Provider> acceptedProviders = getProvidersToQuote(products,providers);
+        acceptedProviders.forEach((provider) -> {
+            String body = generateRequestData(products,provider.getEndpoint().getEndpointParameters());
             String endpoint = provider.getEndpoint().getEndpoint();
+            System.out.println(endpoint);
             sendRequest(body,endpoint);
         });  
     }
     
-    private List<Provider> getProvidersToQuote(List<Product> products){
+    private List<Provider> getProvidersToQuote(List<Product> products,List<Provider> providers){
         System.out.println("getProvidersToQuote");
-        List<Provider> providers = getProvsData();
         List<Provider> acceptedProviders = new ArrayList();
         providers.forEach((provider) -> {
             int availableProducts = 0;
@@ -68,49 +68,26 @@ public class BrokerLogicImpl implements BrokerLogic {
         thread.start();
     }
 
-    private String generateRequestData(Provider provider,List<Product> products) {
-        String body="{\n" +
-                "\"products\":[{\"name\":\"product1\",\"quantity\":1},"
-                + "{\"name\":\"product2\",\"quantity\":2},"
-                + "{\"name\":\"product3\",\"quantity\":3}]\n" +"}";
+    private String generateRequestData(List<Product> products, String epParameters) {
+        WrapperExternalBody web= new WrapperExternalBody(products);
+
+        String body="";
+        String[] params= epParameters.split(" ");
+        try {
+            body = omp.writeValueAsString(web);
+                if (params.length>1){
+                body=body.replaceAll("name", params[0]);
+                body=body.replaceAll("quantity", params[1]);
+            }
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(BrokerLogicImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return body;
     }
 
-    private List<Provider> getProvsData() {
-        System.out.println("getProvsData");
-        /*
-        String response = generateGetRequest("endpoint getProvidersData");
-        List<Provider> provsData;
-        try {
-            provsData = omp.readValue(response, new TypeReference<List<Provider>>() {});
-        } catch (IOException ex) {
-            Logger.getLogger(BrokerLogicImpl.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-        return provsData;*/
-        Provider pr1= new Provider();
-        pr1.setName("proveedor 1");
-        Provider pr= new Provider();
-        pr.setName("proveedor 2");
-        Product p = new Product();
-        p.setName("Agua");
-        p.setPrice(20000);
-        List<Product> prods = new ArrayList<>();
-        prods.add(p);
-        pr1.setProducts(prods);
-        pr.setProducts(prods);
-        EndpointInfo epi = new EndpointInfo();
-        epi.setEndpoint("endpointa");
-        epi.setEndpointParameters("Producto Cantidad");
-        pr.setEndpoint(epi);
-        pr1.setEndpoint(epi);
-        List<Provider> provs = new ArrayList<>();
-        provs.add(pr);
-        provs.add(pr1);
-        return provs;
-    }
 
     private String generateGetRequest(String endpoint) {
+        System.out.println("generateGetRequest");
         try {
             URL urlForGetRequest = new URL(endpoint);
             String readLine = null;
@@ -178,10 +155,6 @@ public class BrokerLogicImpl implements BrokerLogic {
         return null;
     }
 
-    @Override
-    public void sendQuotations(List<Provider> providers) throws BrokerException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 
 
